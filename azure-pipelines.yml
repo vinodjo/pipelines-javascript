@@ -22,7 +22,7 @@ steps:
 - task: PublishTestResults@2
   inputs:
     testRunner: JUnit
-    testResultsFiles: ./test-results.xml
+    testResultsFiles: '**/TEST-RESULTS.xml'
 
 - task: PublishCodeCoverageResults@1
   inputs: 
