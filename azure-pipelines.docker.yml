@@ -11,7 +11,11 @@ steps:
 - script: |
     # npm install
     # npm test
-    docker build -f ./docs/Dockerfile.multistage -t $(dockerId)/$(imageName) .
+    docker build --target build -f ./docs/Dockerfile.multistage -t $(dockerId)/buildImage .
+    docker build --target test -f ./docs/Dockerfile.multistage -t $(dockerId)/testImage:latest .
+    docker run --name testApp --rm -d $(dockerId)/testImage:latest
+    docker cp testApp:app/tests/ $(System.DefaultWorkingDirectory)
+    docker build --target prod -f ./docs/Dockerfile.multistage -t $(dockerId)/$(imageName) .
     docker login -u $(dockerId) -p $pswd
     docker push $(dockerId)/$(imageName)
   env:
